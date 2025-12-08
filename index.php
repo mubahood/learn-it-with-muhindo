@@ -1011,7 +1011,7 @@
             formData.append('message', document.getElementById('message').value);
             
             // Send AJAX request
-            fetch('/learn-it-with-muhindo/enroll.php', {
+            fetch('enroll.php', {
                 method: 'POST',
                 body: formData
             })
