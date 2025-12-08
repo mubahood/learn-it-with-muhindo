@@ -11,15 +11,21 @@ define('DB_USER', 'root');
 define('DB_PASS', 'root');
 define('DB_SOCKET', '/Applications/MAMP/tmp/mysql/mysql.sock');
 
-function getDBConnection() {
+function getDBConnection(&$errorMessage = null) {
     try {
-        $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";unix_socket=" . DB_SOCKET;
+        // Use socket for local development (MAMP), standard connection for production
+        if (defined('DB_SOCKET') && !empty(DB_SOCKET) && file_exists(DB_SOCKET)) {
+            $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";unix_socket=" . DB_SOCKET;
+        } else {
+            $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4";
+        }
         $pdo = new PDO($dsn, DB_USER, DB_PASS);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
         return $pdo;
     } catch(PDOException $e) {
-        error_log("Database connection failed: " . $e->getMessage());
+        $errorMessage = $e->getMessage();
+        error_log("Database connection failed: " . $errorMessage);
         return null;
     }
 }
@@ -81,9 +87,10 @@ function isDuplicateEnrollment($email, $course) {
 }
 
 function saveEnrollment($name, $email, $phone, $course, $message = '') {
-    $pdo = getDBConnection();
+    $dbError = null;
+    $pdo = getDBConnection($dbError);
     if (!$pdo) {
-        return ['success' => false, 'message' => 'Database connection failed. Please try again later.'];
+        return ['success' => false, 'message' => 'Database connection failed. ' . ($dbError ? 'Error: ' . $dbError : 'Please try again later.')];
     }
     
     $name = sanitizeInput($name);

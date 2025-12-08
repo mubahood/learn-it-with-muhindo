@@ -2,7 +2,7 @@
 require_once 'config.php';
 
 // Database connection function
-function getDBConnection() {
+function getDBConnection(&$errorMessage = null) {
     try {
         // Use socket for local development (MAMP), standard connection for production
         if (defined('DB_SOCKET') && !empty(DB_SOCKET) && file_exists(DB_SOCKET)) {
@@ -15,7 +15,8 @@ function getDBConnection() {
         $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
         return $pdo;
     } catch(PDOException $e) {
-        error_log("Database connection failed: " . $e->getMessage());
+        $errorMessage = $e->getMessage();
+        error_log("Database connection failed: " . $errorMessage);
         return null;
     }
 }
@@ -83,9 +84,10 @@ function isDuplicateEnrollment($email, $course) {
 
 // Save enrollment
 function saveEnrollment($name, $email, $phone, $course, $message = '') {
-    $pdo = getDBConnection();
+    $dbError = null;
+    $pdo = getDBConnection($dbError);
     if (!$pdo) {
-        return ['success' => false, 'message' => 'Database connection failed. Please try again later.'];
+        return ['success' => false, 'message' => 'Database connection failed. ' . ($dbError ? 'Error: ' . $dbError : 'Please try again later.')];
     }
     
     // Sanitize inputs
