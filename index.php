@@ -641,6 +641,26 @@
                 <h2>Our Professional Courses</h2>
                 <p>Choose from our comprehensive programs designed to make you job-ready</p>
             </div>
+
+            <!-- Course Introduction Video -->
+            <div class="row mb-5">
+                <div class="col-12">
+                    <div style="background: var(--black); padding: 2rem; margin-bottom: 2rem;">
+                        <h3 style="color: var(--white); margin-bottom: 1.5rem; text-align: center;">Course Introduction</h3>
+                        <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: #000;">
+                            <iframe 
+                                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"
+                                src="https://www.youtube.com/embed/0MLfJ3fKGgs" 
+                                title="Course Introduction Video" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="row g-4">
                 <!-- Course 1 -->
                 <div class="col-lg-4 col-md-6">
