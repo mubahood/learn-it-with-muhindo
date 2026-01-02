@@ -638,7 +638,7 @@
     <section id="courses">
         <div class="container">
             <div class="section-title">
-                <h2>Our Professional Courses</h2>
+                <h2>Our Professional Courses!</h2>
                 <p>Choose from our comprehensive programs designed to make you job-ready</p>
             </div>
 
